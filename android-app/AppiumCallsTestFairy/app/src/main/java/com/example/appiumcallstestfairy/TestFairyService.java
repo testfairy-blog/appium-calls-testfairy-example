@@ -4,11 +4,17 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Base64;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 import com.testfairy.TestFairy;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.nio.charset.StandardCharsets;
 
 public class TestFairyService extends Service {
 
@@ -22,21 +28,25 @@ public class TestFairyService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Bundle extras = intent.getExtras();
 		if (extras != null && extras.containsKey("args")) {
-			String args = extras.getString("args");
-			String[] splitArgs = args.split(",,,");
+			try {
+				final String args = extras.getString("args");
+				final JSONArray argsArray = new JSONArray(new String(Base64.decode(args, Base64.DEFAULT), StandardCharsets.UTF_8));
 
-			switch (splitArgs[0]) {
-				case "begin":
-					begin(splitArgs[1]);
-					break;
-				case "addEvent":
-					addEvent(splitArgs[1]);
-					break;
-				case "stop":
-					stop();
-					break;
-				default:
-					break;
+				switch (argsArray.getString(0)) {
+					case "begin":
+						begin(argsArray.getString(1));
+						break;
+					case "addEvent":
+						addEvent(argsArray.getString(1));
+						break;
+					case "stop":
+						stop();
+						break;
+					default:
+						break;
+				}
+			} catch (JSONException t) {
+				Log.w("TestFairyService", "Can't invoke TestFairy", t);
 			}
 		}
 

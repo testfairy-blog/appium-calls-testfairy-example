@@ -13,7 +13,7 @@ androidOptions.capabilities.app = app;
  */
 async function begin(client, appToken) {
   client.startActivity()
-  const args = "begin,,," + appToken
+  const args = Buffer.from(JSON.stringify(['begin', appToken])).toString('base64');
   await client.execute('mobile: startService', {
     intent: '--es "args" "' + args + '" com.example.appiumcallstestfairy/.TestFairyService',
   });
@@ -38,7 +38,7 @@ async function wait() {
  * @param event Some string value to represent a significant event happening during tests
  */
 async function addEvent(client, event) {
-  const args = "addEvent,,," + event
+  const args = Buffer.from(JSON.stringify(['addEvent', event])).toString('base64');
   await client.execute('mobile: startService', {
     intent: '--es "args" "' + args + '" com.example.appiumcallstestfairy/.TestFairyService',
   });
@@ -50,7 +50,7 @@ async function addEvent(client, event) {
  * @param client wdio client
  */
 async function stop(client) {
-  const args = "stop"
+  const args = Buffer.from(JSON.stringify(['stop'])).toString('base64');
   await client.execute('mobile: startService', {
     intent: '--es "args" "' + args + '" com.example.appiumcallstestfairy/.TestFairyService',
   });
