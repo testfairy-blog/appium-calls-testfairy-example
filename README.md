@@ -1,6 +1,6 @@
 # appium-calls-testfairy-example
 
-This project demonstrates how to call TestFairy SDK with Appium. Check out [this](#TODO) blog post to see how it works behind the scenes! 
+This project demonstrates how to call TestFairy SDK with Appium. Check out [this](https://testfairy.com/blog/how-to-use-appium-to-call-testfairy-sdk/) blog post to see how it works behind the scenes! 
 
 ## Setup
 
